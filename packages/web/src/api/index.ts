@@ -2,7 +2,13 @@ import { Hono } from 'hono';
 import { cors } from "hono/cors"
 import { spawn } from 'child_process';
 import * as path from 'path';
+import * as fs from 'fs';
 import { buildSite } from './generator';
+
+// Ensure sites directory exists — works in both dev (cwd = packages/web) and prod
+const SITES_DIR = path.resolve(process.cwd(), 'sites');
+if (!fs.existsSync(SITES_DIR)) fs.mkdirSync(SITES_DIR, { recursive: true });
+console.log('[whylo] sites dir:', SITES_DIR);
 
 const app = new Hono()
   .basePath('api')
@@ -105,5 +111,38 @@ const appWithGenerate = app.post('/generate', async (c) => {
     }
   });
 
-export type AppType = typeof appWithGenerate;
-export default appWithGenerate;
+const appWithSave = appWithGenerate
+  // Save site HTML and return a shareable slug
+  .post('/save', async (c) => {
+    let body: { html?: string; name?: string };
+    try { body = await c.req.json(); } catch { return c.json({ error: 'Invalid JSON' }, 400); }
+
+    const { html, name } = body;
+    if (!html) return c.json({ error: 'html is required' }, 400);
+
+    // Build slug from business name
+    const slug = (name || 'site')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 40) + '-' + Date.now().toString(36);
+
+    const filePath = path.join(SITES_DIR, `${slug}.html`);
+    fs.writeFileSync(filePath, html, 'utf-8');
+
+    const baseUrl = process.env.BASE_URL || 'http://localhost:4200';
+    return c.json({ slug, url: `${baseUrl}/api/site/${slug}` });
+  })
+  // Serve a saved site
+  .get('/site/:slug', (c) => {
+    const { slug } = c.req.param();
+    // Sanitize slug
+    const safe = slug.replace(/[^a-z0-9-]/g, '');
+    const filePath = path.join(SITES_DIR, `${safe}.html`);
+    if (!fs.existsSync(filePath)) return c.text('Site not found', 404);
+    const html = fs.readFileSync(filePath, 'utf-8');
+    return c.html(html);
+  });
+
+export type AppType = typeof appWithSave;
+export default appWithSave;

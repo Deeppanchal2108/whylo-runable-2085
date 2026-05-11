@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "wouter";
 import {
   ArrowLeft, Download, Palette, Type, ExternalLink, Sparkles,
-  Monitor, Smartphone, RefreshCw, Layout, ChevronDown, Check,
+  Monitor, Smartphone, RefreshCw, Layout, ChevronDown, Check, Globe, Copy, X,
 } from "lucide-react";
 
 interface BrandPalette {
@@ -262,6 +262,9 @@ export default function Editor() {
   const [regenLoading, setRegenLoading] = useState(false);
   const [switchingTemplate, setSwitchingTemplate] = useState<string | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
+  const [showPublishModal, setShowPublishModal] = useState(false);
 
   function notify(msg: string) {
     setNotification(msg);
@@ -392,6 +395,32 @@ export default function Editor() {
     a.click();
   }
 
+  async function handlePublish() {
+    if (!srcdoc) return;
+    setPublishing(true);
+    try {
+      const res = await fetch("/api/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          html: srcdoc,
+          name: site?.content?.business_name || "site",
+        }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        setPublishedUrl(data.url);
+        setShowPublishModal(true);
+      } else {
+        notify("Failed to publish");
+      }
+    } catch {
+      notify("Failed to publish");
+    } finally {
+      setPublishing(false);
+    }
+  }
+
   function openPreview() {
     if (!srcdoc) return;
     const blob = new Blob([srcdoc], { type: "text/html" });
@@ -507,11 +536,20 @@ export default function Editor() {
           </button>
           <button
             onClick={downloadHTML}
-            style={{ background: S.accent, border: "none", cursor: "pointer", color: S.bg, display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, padding: "6px 16px", borderRadius: S.radius2, transition: "opacity 0.15s" }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
-            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+            style={{ background: "none", border: `1px solid ${S.border}`, cursor: "pointer", color: S.muted, display: "flex", alignItems: "center", gap: 6, fontSize: 13, padding: "6px 12px", borderRadius: S.radius2, transition: "all .15s" }}
+            onMouseEnter={e => { e.currentTarget.style.color = S.text; e.currentTarget.style.borderColor = S.border2; }}
+            onMouseLeave={e => { e.currentTarget.style.color = S.muted; e.currentTarget.style.borderColor = S.border; }}
           >
             <Download size={13}/> Download
+          </button>
+          <button
+            onClick={handlePublish}
+            disabled={publishing}
+            style={{ background: S.accent, border: "none", cursor: publishing ? "not-allowed" : "pointer", color: S.bg, display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, padding: "6px 16px", borderRadius: S.radius2, transition: "opacity 0.15s", opacity: publishing ? 0.7 : 1 }}
+            onMouseEnter={e => { if (!publishing) e.currentTarget.style.opacity = "0.85"; }}
+            onMouseLeave={e => (e.currentTarget.style.opacity = publishing ? "0.7" : "1")}
+          >
+            <Globe size={13}/> {publishing ? "Publishing…" : "Publish"}
           </button>
         </div>
       </div>
@@ -805,6 +843,57 @@ export default function Editor() {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: ${S.border2}; border-radius: 4px; }
       `}</style>
+
+      {/* Publish Modal */}
+      {showPublishModal && publishedUrl && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999 }}>
+          <div style={{ background: S.surface, border: `1px solid ${S.border}`, borderRadius: 12, padding: 32, width: 480, maxWidth: "90vw", display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 36, height: 36, background: S.accent + "22", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Globe size={18} color={S.accent} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 16, color: S.text }}>Site Published!</div>
+                  <div style={{ fontSize: 12, color: S.muted }}>Your site is live and shareable</div>
+                </div>
+              </div>
+              <button onClick={() => setShowPublishModal(false)} style={{ background: "none", border: "none", cursor: "pointer", color: S.muted, padding: 4 }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* URL box */}
+            <div style={{ background: S.panel, border: `1px solid ${S.border}`, borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ flex: 1, fontSize: 13, color: S.text, wordBreak: "break-all" }}>{publishedUrl}</span>
+              <button
+                onClick={() => { navigator.clipboard.writeText(publishedUrl); notify("Copied!"); }}
+                style={{ background: "none", border: "none", cursor: "pointer", color: S.muted, flexShrink: 0, padding: 4 }}
+                title="Copy link"
+              >
+                <Copy size={15} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <a
+                href={publishedUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{ flex: 1, background: S.accent, color: S.bg, border: "none", borderRadius: 8, padding: "10px 0", fontSize: 14, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, textDecoration: "none" }}
+              >
+                <ExternalLink size={14} /> Open Site
+              </a>
+              <button
+                onClick={downloadHTML}
+                style={{ flex: 1, background: "none", border: `1px solid ${S.border}`, color: S.text, borderRadius: 8, padding: "10px 0", fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
+              >
+                <Download size={14} /> Download HTML
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
