@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{{business_name}}</title>
+<meta name="description" content="{{meta_description}}"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" data-editable="business_name">{{business_name}}</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact" class="nav-cta">Say hi 👋</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mm-close" id="mmClose">✕</button>
+  <a href="#about" class="mm-link">About</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
+  <a href="#reviews" class="mm-link">Reviews</a>
+  <a href="#contact" class="mm-link mm-cta">Say hi 👋</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="container hero-layout">
+    <div class="hero-text">
+      <div class="hero-tag-pill">
+        <span class="tag-dot"></span>
+        <span data-editable="category">{{category}}</span>
+      </div>
+      <h1 class="hero-title" data-editable="hero_title">{{hero_title}}</h1>
+      <p class="hero-desc" data-editable="hero_description">{{hero_description}}</p>
+      <div class="hero-rating">
+        <div class="star-row">{{rating_stars}}</div>
+        <span>{{rating}} · {{total_reviews}} reviews</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary" data-editable="cta_primary">{{cta_primary}}</a>
+        <a href="#gallery" class="btn-soft">See our work →</a>
+      </div>
+    </div>
+    {{#if gallery_image_1}}
+    <div class="hero-img-wrap">
+      <img src="{{gallery_image_1}}" alt="{{business_name}}" class="hero-img editable-image"/>
+      <div class="hero-float-card">
+        <div class="float-emoji">⭐</div>
+        <div>
+          <div class="float-num">{{rating}}</div>
+          <div class="float-sub">{{total_reviews}}+ reviews</div>
+        </div>
+      </div>
+      <div class="hero-float-tag">{{feature_count}} {{feature_count_label}}</div>
+    </div>
+    {{/if}}
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>{{business_name}}</span><span class="t-sep">✦</span>
+    <span>{{rating}} ★</span><span class="t-sep">✦</span>
+    <span>{{total_reviews}} Happy Clients</span><span class="t-sep">✦</span>
+    <span>{{feature_count}} {{feature_count_label}}</span><span class="t-sep">✦</span>
+    <span>{{business_name}}</span><span class="t-sep">✦</span>
+    <span>{{rating}} ★</span><span class="t-sep">✦</span>
+    <span>{{total_reviews}} Happy Clients</span><span class="t-sep">✦</span>
+    <span>{{feature_count}} {{feature_count_label}}</span><span class="t-sep">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="container about-grid">
+    <div class="about-img-wrap">
+      {{#if gallery_image_2}}<img src="{{gallery_image_2}}" alt="About {{business_name}}" class="about-img editable-image"/>{{/if}}
+      <div class="about-badge-float">
+        <span class="badge-icon">🏆</span>
+        <span class="badge-val">{{total_reviews}}+</span>
+        <span class="badge-txt">Happy Clients</span>
+      </div>
+    </div>
+    <div class="about-content">
+      <span class="chip">Our story</span>
+      <h2 class="serif-italic" data-editable="about_title">{{about_title}}</h2>
+      <p data-editable="about_body">{{about_body}}</p>
+      <div class="about-stats">
+        <div class="astat">
+          <span class="astat-num">{{rating}}</span>
+          <span class="astat-lbl">Star Rating</span>
+        </div>
+        <div class="astat-divider"></div>
+        <div class="astat">
+          <span class="astat-num">{{total_reviews}}+</span>
+          <span class="astat-lbl">Reviews</span>
+        </div>
+        <div class="astat-divider"></div>
+        <div class="astat">
+          <span class="astat-num">{{feature_count}}</span>
+          <span class="astat-lbl">{{feature_count_label}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="chip">Why us</span>
+      <h2 class="serif-italic" data-editable="features_title">{{features_title}}</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal-item">
+        <div class="feat-emoji">✦</div>
+        <h3 data-editable="feature_1_title">{{feature_1_title}}</h3>
+        <p data-editable="feature_1_desc">{{feature_1_desc}}</p>
+      </div>
+      <div class="feat-card reveal-item">
+        <div class="feat-emoji">◈</div>
+        <h3 data-editable="feature_2_title">{{feature_2_title}}</h3>
+        <p data-editable="feature_2_desc">{{feature_2_desc}}</p>
+      </div>
+      <div class="feat-card reveal-item">
+        <div class="feat-emoji">⬡</div>
+        <h3 data-editable="feature_3_title">{{feature_3_title}}</h3>
+        <p data-editable="feature_3_desc">{{feature_3_desc}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="gallery">
+  <div class="container">
+    <div class="section-head">
+      <span class="chip">Our work</span>
+      <h2 class="serif-italic">A glimpse inside</h2>
+    </div>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="galleryCarousel">
+      {{#each gallery_images}}
+      <div class="carousel-slide"><img src="{{this}}" alt="Gallery" loading="lazy"/></div>
+      {{/each}}
+    </div>
+    <button class="c-btn c-prev" id="gallPrev" aria-label="Previous">←</button>
+    <button class="c-btn c-next" id="gallNext" aria-label="Next">→</button>
+    <div class="c-dots" id="gallDots"></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="reviews">
+  <div class="container">
+    <div class="section-head reviews-head">
+      <div>
+        <span class="chip">Reviews</span>
+        <h2 class="serif-italic" data-editable="testimonials_title">{{testimonials_title}}</h2>
+      </div>
+      <div class="rating-pill">
+        <span class="rp-num">{{rating}}</span>
+        <div>
+          <div class="rp-stars">{{rating_stars}}</div>
+          <div class="rp-count">{{total_reviews}} reviews</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-wrap">
+      <div class="testi-track" id="testiCarousel">
+        {{#each testimonials}}
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="tq-mark">"</div>
+            <p class="testi-text" data-editable="testimonial">{{text}}</p>
+            <div class="testi-bottom">
+              <div class="testi-stars">{{../rating_stars}}</div>
+              <div class="testi-by">
+                <span class="t-name">{{author}}</span>
+                <span class="t-date">{{date}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      <div class="testi-controls">
+        <button class="c-btn" id="testiPrev" aria-label="Previous">←</button>
+        <div class="c-dots inline-dots" id="testiDots"></div>
+        <button class="c-btn" id="testiNext" aria-label="Next">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container cta-inner">
+    <div class="cta-left">
+      <h2 class="serif-italic" data-editable="cta_heading">{{cta_heading}}</h2>
+      <p data-editable="cta_subheading">{{cta_subheading}}</p>
+    </div>
+    <a href="#contact" class="btn-primary btn-lg" data-editable="cta_primary">{{cta_primary}}</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="container contact-grid">
+    <div class="contact-left">
+      <span class="chip">Find us</span>
+      <h2 class="serif-italic">Come say hello</h2>
+      <div class="ci-list">
+        {{#if address}}<div class="ci"><span class="ci-icon">📍</span><div><span class="ci-lbl">Address</span><span class="ci-val" data-editable="address">{{address}}</span></div></div>{{/if}}
+        {{#if phone}}<div class="ci"><span class="ci-icon">📞</span><div><span class="ci-lbl">Phone</span><span class="ci-val" data-editable="phone">{{phone}}</span></div></div>{{/if}}
+        {{#if hours}}<div class="ci"><span class="ci-icon">🕐</span><div><span class="ci-lbl">Hours</span><span class="ci-val" data-editable="hours">{{hours}}</span></div></div>{{/if}}
+        {{#if website}}<div class="ci"><span class="ci-icon">🌐</span><div><span class="ci-lbl">Website</span><a href="{{website}}" target="_blank" class="ci-val ci-link">{{website}}</a></div></div>{{/if}}
+      </div>
+      <div class="social-block">
+        <span class="ci-lbl">Follow us</span>
+        <div class="social-row">
+          <a href="{{social_instagram}}" class="soc-btn" data-social="instagram" data-editable-href="social_instagram" title="Instagram" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="{{social_facebook}}" class="soc-btn" data-social="facebook" data-editable-href="social_facebook" title="Facebook" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="{{social_twitter}}" class="soc-btn" data-social="twitter" data-editable-href="social_twitter" title="X / Twitter" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="{{social_whatsapp}}" class="soc-btn" data-social="whatsapp" data-editable-href="social_whatsapp" title="WhatsApp" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    {{#if gallery_image_3}}
+    <div class="contact-right">
+      <img src="{{gallery_image_3}}" alt="{{business_name}}" class="contact-img editable-image"/>
+    </div>
+    {{/if}}
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">{{business_name}}</span>
+      <span class="footer-cat">{{category}}</span>
+    </div>
+    <div class="footer-socials">
+      <a href="{{social_instagram}}" data-social="instagram" data-editable-href="social_instagram" target="_blank" rel="noopener">Instagram</a>
+      <a href="{{social_facebook}}" data-social="facebook" data-editable-href="social_facebook" target="_blank" rel="noopener">Facebook</a>
+      <a href="{{social_twitter}}" data-social="twitter" data-editable-href="social_twitter" target="_blank" rel="noopener">X</a>
+      <a href="{{social_whatsapp}}" data-social="whatsapp" data-editable-href="social_whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <p class="footer-copy">© {{current_year}} {{business_name}}</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
