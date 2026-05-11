@@ -130,7 +130,8 @@ const appWithSave = appWithGenerate
     const filePath = path.join(SITES_DIR, `${slug}.html`);
     fs.writeFileSync(filePath, html, 'utf-8');
 
-    const baseUrl = process.env.BASE_URL || 'http://localhost:4200';
+    const baseUrl = process.env.BASE_URL ||
+      `${c.req.header('x-forwarded-proto') || 'https'}://${c.req.header('x-forwarded-host') || c.req.header('host')}`;
     return c.json({ slug, url: `${baseUrl}/api/site/${slug}` });
   })
   // Serve a saved site
