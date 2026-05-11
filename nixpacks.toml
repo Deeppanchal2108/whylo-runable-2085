@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["bun", "python3", "python3Packages.pip", "nodejs_20"]
+
+[phases.install]
+cmds = [
+  "bun install",
+  "pip3 install playwright requests beautifulsoup4 lxml --break-system-packages || pip3 install playwright requests beautifulsoup4 lxml",
+  "python3 -m playwright install chromium --with-deps || true"
+]
+
+[phases.build]
+cmds = ["cd packages/web && bun run build"]
+
+[start]
+cmd = "cd packages/web && bun run serve"

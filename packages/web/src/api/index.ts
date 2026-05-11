@@ -27,7 +27,7 @@ const app = new Hono()
       return c.json({ error: 'Please provide a valid Google Maps URL' }, 400);
     }
 
-    const scriptPath = path.resolve('/home/user/whylo/packages/web/src/api/scraper.py');
+    const scriptPath = path.resolve(process.cwd(), 'src/api/scraper.py');
 
     return new Promise((resolve) => {
       const proc = spawn('python3', [scriptPath, url], {
